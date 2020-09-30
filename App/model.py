@@ -72,9 +72,11 @@ def newSeverityEntry(severitygrp, accident):
 def addAccident(analyzer, accident):
     """
     """
+
     lt.addLast(analyzer['accidents'], accident)
     updateDateIndex(analyzer['dates'], accident)
     return analyzer
+    
 def updateDateIndex(map, accident):
     """
     Se toma la fecha del crimen y se busca si ya existe en el arbol

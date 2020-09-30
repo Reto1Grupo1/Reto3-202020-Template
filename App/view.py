@@ -76,24 +76,29 @@ while True:
         cont = controller.init()
 
     elif int(inputs[0]) == 2:
-        print("\nCargando información de crimenes ....")
-        controller.loadData(cont, accidents_file)
-        print('Crimenes cargados: ' + str(controller.accidentSize(cont)))
-        print('Altura del arbol: ' + str(controller.indexHeight(cont)))
-        print('Elementos en el arbol: ' + str(controller.indexSize(cont)))
-        print('Menor Llave: ' + str(controller.minKey(cont)))
-        print('Mayor Llave: ' + str(controller.maxKey(cont)))
-
+            print("\nCargando información de crimenes ....")
+        
+            controller.loadData(cont, accidents_file)
+            print('Crimenes cargados: ' + str(controller.accidentSize(cont)))
+            print('Altura del arbol: ' + str(controller.indexHeight(cont)))
+            print('Elementos en el arbol: ' + str(controller.indexSize(cont)))
+            print('Menor Llave: ' + str(controller.minKey(cont)))
+            print('Mayor Llave: ' + str(controller.maxKey(cont)))
+        
+            print("La fecha no está registrada")
         
 
     elif int(inputs[0]) == 3:
         print("\nBuscando crimenes x grupo de Severity en una fecha: ")
-        initialDate = input("Fecha (YYYY-MM-DD): ")
-        severity= input("Severidad que desea consultar: ")
-        numseverity = controller.getCrimesBySeverity(cont, initialDate,
-                                                      severity)
-        print("\nTotal de ofensas tipo: " + severity + " en esa fecha:  " +
-              str(numseverity))
+        try:
+            initialDate = input("Fecha (YYYY-MM-DD): ")
+            severity= input("Severidad que desea consultar: ")
+            numseverity = controller.getCrimesBySeverity(cont, initialDate,
+                                                        severity)
+            print("\nTotal de ofensas tipo: " + severity + " en esa fecha:  " +
+                str(numseverity))
+        except:
+            print("La fecha es inválida.")
 
     elif int(inputs[0]) == 4:
         print("\nRequerimiento No 1 del reto 3: ")
