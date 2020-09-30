@@ -22,6 +22,7 @@
 
 import sys
 import config
+from DISClib.ADT import list as lt
 from App import controller
 assert config
 
@@ -37,11 +38,17 @@ operación seleccionada.
 # ___________________________________________________
 
 
-crimefile = 'crime-utf8.csv'
+accidents_file = 'us_accidents_small.csv'
 
 # ___________________________________________________
 #  Menu principal
 # ___________________________________________________
+
+
+
+
+
+
 
 
 def printMenu():
@@ -50,7 +57,7 @@ def printMenu():
     print("Bienvenido")
     print("1- Inicializar Analizador")
     print("2- Cargar información de accidentes")
-    print("3- Requerimento 1")
+    print("3- Buscar accidentes por fecha y severidad")
     print("4- Requerimento 2")
     print("0- Salir")
     print("*******************************************")
@@ -70,9 +77,23 @@ while True:
 
     elif int(inputs[0]) == 2:
         print("\nCargando información de crimenes ....")
+        controller.loadData(cont, accidents_file)
+        print('Crimenes cargados: ' + str(controller.accidentSize(cont)))
+        print('Altura del arbol: ' + str(controller.indexHeight(cont)))
+        print('Elementos en el arbol: ' + str(controller.indexSize(cont)))
+        print('Menor Llave: ' + str(controller.minKey(cont)))
+        print('Mayor Llave: ' + str(controller.maxKey(cont)))
+
+        
 
     elif int(inputs[0]) == 3:
-        print("\nBuscando crimenes en un rango de fechas: ")
+        print("\nBuscando crimenes x grupo de Severity en una fecha: ")
+        initialDate = input("Fecha (YYYY-MM-DD): ")
+        severity= input("Severidad que desea consultar: ")
+        numseverity = controller.getCrimesBySeverity(cont, initialDate,
+                                                      severity)
+        print("\nTotal de ofensas tipo: " + severity + " en esa fecha:  " +
+              str(numseverity))
 
     elif int(inputs[0]) == 4:
         print("\nRequerimiento No 1 del reto 3: ")
