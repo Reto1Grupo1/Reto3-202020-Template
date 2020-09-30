@@ -23,6 +23,7 @@
 import sys
 import config
 from DISClib.ADT import list as lt
+from DISClib.ADT import orderedmap as od
 from App import controller
 assert config
 
@@ -99,9 +100,13 @@ while True:
                 str(numseverity))
         except:
             print("La fecha es inválida.")
+            
 
     elif int(inputs[0]) == 4:
         print("\nRequerimiento No 1 del reto 3: ")
+
+        
+        
 
     else:
         sys.exit(0)
