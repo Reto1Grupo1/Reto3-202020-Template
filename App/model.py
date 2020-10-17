@@ -52,10 +52,12 @@ def newAnalyzer():
                 }
 
     analyzer['accidents'] = lt.newList('SINGLE_LINKED', compareIds)
-    analyzer['dates'] = om.newMap(omaptype='RBT',
+    analyzer['dates'] = om.newMap(omaptype='BST',
                                       comparefunction=compareDates)
-    analyzer["Severity"]= om.newMap(omaptype='RBT',
+    analyzer["Severity"]= om.newMap(omaptype='BST',
                                       comparefunction=compareSeverity)
+    analyzer["Llaves"]=om.newMap(omaptype='BST',
+                                      comparefunction=compareDates)
     return analyzer
 
 # Funciones para agregar informacion al catalogo
@@ -68,6 +70,18 @@ def newSeverityEntry(severitygrp, accident):
     seventry['Severity'] = severitygrp
     seventry['lstSeverity'] = lt.newList('SINGLELINKED', compareSeverity)
     return seventry
+
+def addFecha(analyzer,accident):
+    key=accident["Start_Time"][0:10]
+    if om.contains(analyzer["Llaves"],key)==False:
+        Listvalues=lt.newList("ARRALIST",compareDates)
+        lt.addFirst(Listvalues,accident)
+        om.put(analyzer["Llaves"],key,Listvalues)
+    else:
+        Lista=om.get(analyzer["Llaves"],key)
+        lt.addLast(Lista["value"],accident)
+        NewValue=Lista["value"]
+        om.put(analyzer["Llaves"],key,NewValue)
 
 def addAccident(analyzer, accident):
     """
@@ -91,7 +105,7 @@ def updateDateIndex(map, accident):
     entry = om.get(map, accidentdate.date())
     if entry is None:
         datentry = newDataEntry(accident)
-        om.put(map, accidentdate.date(), datentry)
+        om.put(map, accidentdate.date(), datentry) 
     else:
         datentry = me.getValue(entry)
     
@@ -118,6 +132,7 @@ def addDateIndex(datentry, accident):
         entry = me.getValue(sevntry)
         lt.addLast(entry['lstSeverity'], accident)
     return datentry
+    
 def newDataEntry(accident):
     """
     Crea una entrada en el indice por fechas, es decir en el arbol
@@ -169,11 +184,67 @@ def getCrimesByRangeCode(analyzer, initialDate, Severity):
     de un tipo especifico.
     """
     severitydate = om.get(analyzer['dates'], initialDate)
+    print(severitydate['key'])
     if severitydate['key'] is not None:
         severitymap = me.getValue(severitydate)['SeverityIndex']
         numSeverity = m.get(severitymap, Severity)
         if numSeverity is not None:
             return m.size(me.getValue(numSeverity)['lstSeverity'])
+
+
+
+def requerimiento3(analyzer,InitialDate,FinalDate):
+    
+    Initial=str(InitialDate)
+    Final=str(FinalDate)
+    yearI=Initial[0:4]
+    monthI=Initial[5:7]
+    dayI=Initial[8:10]
+    yearF=Final[0:4]
+    monthF=Final[5:7]
+    dayF=Final[8:10]
+    Total=0
+    ListSeveridad=[]
+    for year in range(int(yearI),int(yearF)+1):
+        for month in range(1,13):
+            if month < 10:
+                month="0"+str(month)
+            for day in range(1,32):
+                if day < 10:
+                    day="0"+str(day)
+                fecha=str(year)+str(month)+str(day)
+                key=str(year)+"-"+str(month)+"-"+str(day)
+                if int(yearI+monthI+dayI)<= int(fecha) <= int(yearF+monthF+dayF):
+                        valor=om.contains(analyzer["Llaves"],key)
+                        if valor!=False:
+                            valor=om.get(analyzer["Llaves"],key)
+                            o=valor["value"]
+                            CantidadA=int(lt.size(o))
+                            Total=CantidadA+Total
+                            for i in range(1,int(CantidadA)+1):
+                                Causa=lt.getElement(valor["value"],i)
+                                Severidad=Causa["Severity"]
+                                ListSeveridad.append(Severidad)
+
+    for j in range(0,len(ListSeveridad)):
+        numbd=ListSeveridad.count(ListSeveridad[j])
+        mayor=0
+        if numbd>mayor:
+            mayor=numbd
+            Sev=ListSeveridad[j]
+    Resultado=(Sev,Total)
+    return Resultado
+
+
+                        
+
+
+                    
+
+
+
+
+
         
 
 # ==============================

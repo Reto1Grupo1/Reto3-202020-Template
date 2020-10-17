@@ -61,6 +61,7 @@ def loadData(analyzer, accidentsfile):
                                     delimiter=",")
     for accident in input_file:
         model.addAccident(analyzer, accident)
+        model.addFecha(analyzer,accident)
     return analyzer
 
 # ___________________________________________________
@@ -98,3 +99,6 @@ def getCrimesBySeverity(analyzer, initialDate,
     initialDate = datetime.datetime.strptime(initialDate, '%Y-%m-%d')
     return model.getCrimesByRangeCode(analyzer, initialDate.date(),
                                       severity)
+def requerimiento3(analyzer,InitialDate,FinalDate):
+    return model.requerimiento3(analyzer,InitialDate,FinalDate)
+

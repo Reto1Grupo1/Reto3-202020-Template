@@ -26,6 +26,7 @@ from DISClib.ADT import list as lt
 from DISClib.ADT import orderedmap as od
 from App import controller
 assert config
+import datetime
 
 """
 La vista se encarga de la interacción con el usuario.
@@ -39,7 +40,7 @@ operación seleccionada.
 # ___________________________________________________
 
 
-accidents_file = 'US_Accidents.csv'
+accidents_file = 'us_accidents_small.csv'
 
 # ___________________________________________________
 #  Menu principal
@@ -59,7 +60,7 @@ def printMenu():
     print("1- Inicializar Analizador")
     print("2- Cargar información de accidentes")
     print("3- Buscar accidentes por fecha y severidad")
-    print("4- Requerimento 2")
+    print("4- Requerimento 3")
     print("0- Salir")
     print("*******************************************")
 
@@ -93,6 +94,7 @@ while True:
         print("\nBuscando crimenes x grupo de Severity en una fecha: ")
         try:
             initialDate = input("Fecha (YYYY-MM-DD): ")
+            print(type(initialDate))
             severity= input("Severidad que desea consultar: ")
             numseverity = controller.getCrimesBySeverity(cont, initialDate,
                                                         severity)
@@ -103,10 +105,16 @@ while True:
             
 
     elif int(inputs[0]) == 4:
-        print("\nRequerimiento No 1 del reto 3: ")
-
-        
-        
+        InitialDate=input("Ingrese una fecha inicial de la forma YYYY-MM-DD: ")
+        FinalDate=input("Ingrese una fecha final de la forma YYYY-MM-DD: ")
+        try:
+            fecha1=int(str(InitialDate[0:4])+str(InitialDate[5:7])+str(InitialDate[8:10]))
+            fecha2=int(str(FinalDate[0:4])+str(FinalDate[5:7])+str(FinalDate[8:10]))
+            if  9<len(InitialDate)<11  and 9<len(FinalDate)<11 :
+                a=controller.requerimiento3(cont,InitialDate,FinalDate)
+                print("La cantidad de acidentes que sucedieron durante las fechas "+InitialDate+" y "+FinalDate+" son "+str(a[1])+" y el mayor tipo de severidad que sucedio fue "+ str(a[0]) )
+        except:
+            print("La fecha es Invalida")
 
     else:
         sys.exit(0)
