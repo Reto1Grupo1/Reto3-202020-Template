@@ -47,12 +47,6 @@ accidents_file = 'us_accidents_small.csv'
 # ___________________________________________________
 
 
-
-
-
-
-
-
 def printMenu():
     print("\n")
     print("*******************************************")
@@ -60,7 +54,8 @@ def printMenu():
     print("1- Inicializar Analizador")
     print("2- Cargar información de accidentes")
     print("3- Buscar accidentes por fecha y severidad")
-    print("4- Requerimento 3")
+    print("4- Conocer los accidentes anteriores a una fecha")
+    print("5- Conocer los accidentes en un rango de fechas")
     print("0- Salir")
     print("*******************************************")
 
@@ -104,7 +99,7 @@ while True:
             print("La fecha es inválida.")
             
 
-    elif int(inputs[0]) == 4:
+    elif int(inputs[0]) == 5:
         InitialDate=input("Ingrese una fecha inicial de la forma YYYY-MM-DD: ")
         FinalDate=input("Ingrese una fecha final de la forma YYYY-MM-DD: ")
         try:
@@ -115,6 +110,20 @@ while True:
                 print("La cantidad de acidentes que sucedieron durante las fechas "+InitialDate+" y "+FinalDate+" son "+str(a[1])+" y el mayor tipo de severidad que sucedio fue "+ str(a[0]) )
         except:
             print("La fecha es Invalida")
+
+
+    elif int(inputs[0]) == 4:
+        BeforeDate=input("Fecha (YYYY-MM-DD): ")
+        try:
+            Retorno=controller.GetAccidentsBeforeDate(cont,BeforeDate)
+            print("Total de accidentes antes de la fecha: "+str(lt.getElement(Retorno,1)))
+            
+            print("---------------")
+            print("Dia con mas accidentes: "+str(lt.getElement(Retorno,2)))
+            print("---------------")
+        except:
+            print("La fecha es invalida")
+
 
     else:
         sys.exit(0)

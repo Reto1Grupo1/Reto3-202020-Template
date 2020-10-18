@@ -178,6 +178,8 @@ def maxKey(analyzer):
     """Numero de autores leido
     """
     return om.maxKey(analyzer['dates'])
+
+
 def getCrimesByRangeCode(analyzer, initialDate, Severity):
     """
     Para una fecha determinada, retorna el numero de crimenes
@@ -190,7 +192,6 @@ def getCrimesByRangeCode(analyzer, initialDate, Severity):
         numSeverity = m.get(severitymap, Severity)
         if numSeverity is not None:
             return m.size(me.getValue(numSeverity)['lstSeverity'])
-
 
 
 def requerimiento3(analyzer,InitialDate,FinalDate):
@@ -236,16 +237,72 @@ def requerimiento3(analyzer,InitialDate,FinalDate):
     return Resultado
 
 
-                        
+def GetAccidentsBeforeDate(analyzer,BeforeDate):
+    
+    BeforeDateYear="201"+str(BeforeDate[3])
+    BeforeDateMonth=str(BeforeDate[5])+str(BeforeDate[6])
+    BeforeDateDay=str(BeforeDate[8])+str(BeforeDate[9])
+    MinDate=om.minKey(analyzer["Llaves"])
+    
+    if BeforeDateDay=="01":
+        if BeforeDateMonth=="05" or BeforeDateMonth=="07" or BeforeDateMonth=="08" or BeforeDateMonth=="12":
+            BeforeDateDay="30"
+            BeforeDateMonth=(str(BeforeDateMonth[0]))+(str(int(BeforeDateMonth[1])-1))
+        elif BeforeDateMonth=="02" or BeforeDateMonth=="04" or BeforeDateMonth=="06" or BeforeDateMonth=="09" or BeforeDateMonth=="11":
+            BeforeDateDay="31"
+            BeforeDateMonth=(str(BeforeDateMonth[0]))+(str(int(BeforeDateMonth[1])-1))
+        elif BeforeDateMonth=="10":
+            BeforeDateDay="30"
+            BeforeDateMonth="09"
+        elif BeforeDateMonth=="03":
+            if BeforeDateYear=="2016":
+                BeforeDateDay="29"
+            else:
+                BeforeDateDay="28"
+            BeforeDateMonth="02"
+        else:
+            BeforeDateDay="31"
+            BeforeDateMonth="12"
+            BeforeDateYear="201"+str(int(BeforeDateYear[3])-1)
+    elif BeforeDateDay[0]=="0":
+        BeforeDateDay=str(BeforeDateDay[0])+str(int(BeforeDateDay[1])-1)
+    elif BeforeDateDay=="10":
+        BeforeDateDay="09"
+    else:
+        BeforeDateDay=str(int(BeforeDateDay)-1)
 
+    
+    MaxDate=BeforeDateYear+"-"+BeforeDateMonth+"-"+BeforeDateDay
+    Dates=(om.keys(analyzer["Llaves"],MinDate,MaxDate))
 
-                    
+    print(MinDate)
+    print(MaxDate)
 
+    TotalAccidents=0
+    MaxAccidents=0
+    MostAccidentsDate="YYYY-MM-DD"
+    
+    for i in range(1,(lt.size(Dates))):
+        Date=lt.getElement(Dates,i)
+        Pair=om.get(analyzer["Llaves"],Date)
+        Accidents=me.getValue(Pair)
+        Number=lt.size(Accidents)
+        TotalAccidents=TotalAccidents+Number
+        if Number>MaxAccidents:
+            MaxAccidents=Number
+            MostAccidentsDate=Date
+            
+    Retorno=lt.newList("SINGLE_LINKED",compareIds)
+    lt.addLast(Retorno,TotalAccidents)
+    lt.addLast(Retorno,MostAccidentsDate)
+    print("Retorno:")
+    print(Retorno)
+    print("TotalAccidents:")
+    print(lt.getElement(Retorno,1))
+    print("MostAccidentsDate:")
+    print(lt.getElement(Retorno,2))
+    return Retorno
 
-
-
-
-        
 
 # ==============================
 # Funciones de Comparacion

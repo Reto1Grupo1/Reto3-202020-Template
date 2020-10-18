@@ -102,3 +102,5 @@ def getCrimesBySeverity(analyzer, initialDate,
 def requerimiento3(analyzer,InitialDate,FinalDate):
     return model.requerimiento3(analyzer,InitialDate,FinalDate)
 
+def GetAccidentsBeforeDate(analyzer,BeforeDate):
+    return model.GetAccidentsBeforeDate(analyzer,BeforeDate)
