@@ -178,8 +178,8 @@ def keySet(bst):
         Exception
     """
     try:
-        klist = lt.newList()
-        klist = keySetTree(bst, klist)
+        klist = lt.newList('SINGLE_LINKED', bst['cmpfunction'])
+        klist = keySetTree(bst['root'], klist)
         return klist
     except Exception as exp:
         error.reraise(exp, 'BST:KeySet')
@@ -196,8 +196,8 @@ def valueSet(bst):
         Exception
     """
     try:
-        vlist = lt.newList()
-        vlist = valueSetTree(bst, vlist)
+        vlist = lt.newList('SINGLE_LINKED', bst['cmpfunction'])
+        vlist = valueSetTree(bst['root'], vlist)
         return vlist
     except Exception as exp:
         error.reraise(exp, 'BST:valueSet')
@@ -374,7 +374,6 @@ def keys(bst, keylo, keyhi):
     """
     Retorna todas las llaves del arbol que se encuentren entre
     [keylo, keyhi]
-
     Args:
         bst: La tabla de simbolos
         keylo: limite inferior
@@ -385,7 +384,7 @@ def keys(bst, keylo, keyhi):
         Exception
     """
     try:
-        lstkeys = lt.newList('SINGLELINKED', bst['cmpfunction'])
+        lstkeys = lt.newList('SINGLE_LINKED', bst['cmpfunction'])
         lstkeys = keysRange(bst['root'], keylo, keyhi, lstkeys,
                             bst['cmpfunction'])
         return lstkeys
@@ -397,7 +396,6 @@ def values(bst, keylo, keyhi):
     """
     Retorna todas los valores del arbol que se encuentren entre
     [keylo, keyhi]
-
     Args:
         bst: La tabla de simbolos
         keylo: limite inferior
@@ -408,7 +406,7 @@ def values(bst, keylo, keyhi):
         Exception
     """
     try:
-        lstvalues = lt.newList('SINGLELINKED', bst['cmpfunction'])
+        lstvalues = lt.newList('SINGLE_LINKED', bst['cmpfunction'])
         lstvalues = valuesRange(bst['root'], keylo, keyhi, lstvalues,
                                 bst['cmpfunction'])
         return lstvalues

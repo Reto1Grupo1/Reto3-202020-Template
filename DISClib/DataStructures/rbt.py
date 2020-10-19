@@ -1,3 +1,4 @@
+
 """
  * Copyright 2020, Departamento de sistemas y Computación
  * Universidad de Los Andes
@@ -35,7 +36,6 @@ assert config
 """
 Implementación de una tabla de simbolos ordenada, mediante un arbol binario
 balanceado Red-Black.
-
 Este código está basados en la implementación
 propuesta por R.Sedgewick y Kevin Wayne en su libro
 Algorithms, 4th Edition
@@ -89,7 +89,6 @@ def put(rbt, key, value):
 def get(rbt, key):
     """
     Retorna la pareja llave, valor, cuya llave sea igual a key.
-
     Args:
         rbt: El arbol de búsqueda
         key: La llave asociada a la pareja
@@ -133,7 +132,6 @@ def contains(rbt, key):
     Retorna True si la llave key se encuentra en la tabla
     o False en caso contrario.
     Es necesario proveer la función de comparación entre llaves.
-
     Args:
         rbt: El arbol de búsqueda
         key: La llave a buscar
@@ -194,8 +192,8 @@ def keySet(rbt):
         Exception
     """
     try:
-        klist = lt.newList()
-        klist = keySetTree(rbt, klist)
+        klist = lt.newList('SINGLE_LINKED', rbt['cmpfunction'])
+        klist = keySetTree(rbt['root'], klist)
         return klist
     except Exception as exp:
         error.reraise(exp, 'RBT:KeySet')
@@ -212,8 +210,8 @@ def valueSet(rbt):
         Exception
     """
     try:
-        vlist = lt.newList()
-        vlist = valueSetTree(rbt, vlist)
+        vlist = lt.newList('SINGLE_LINKED', rbt['cmpfunction'])
+        vlist = valueSetTree(rbt['root'], vlist)
         return vlist
     except Exception as exp:
         error.reraise(exp, 'RBT:valueSet')
@@ -255,9 +253,7 @@ def deleteMin(rbt):
     """
     Encuentra y remueve la menor  llave de la tabla de simbolos
     y su valor asociado
-
     TODO: No implementada en esta versión
-
     rbt: La tabla de simbolos
     Returns:
         La tabla de simbolos sin la menor llave
@@ -282,9 +278,7 @@ def deleteMax(rbt):
     """
     Encuentra y remueve la mayor llave de la tabla de simbolos
     y su valor asociado
-
     TODO: No implementada en esta versión
-
     Args:
         rbt: La tabla de simbolos
     Returns:
@@ -310,7 +304,6 @@ def floor(rbt, key):
     """
     Retorna la llave mas grande en la tabla de simbolos, menor o
     igual a la llave key
-
     Args:
         rbt: El arbol de búsqueda
     Returns:
@@ -388,7 +381,6 @@ def rank(rbt, key):
 def height(rbt):
     """
     Retorna la altura del arbol
-
     Args:
         rbt: El arbol con las parejas
     Returns:
@@ -428,7 +420,6 @@ def values(rbt, keylo, keyhi):
     """
     Retorna todas los valores del arbol que se encuentren entre
     [keylo, keyhi]
-
     Args:
         bst: La tabla de simbolos
         keylo: limite inferior
@@ -659,7 +650,6 @@ def insertNode(root, key, value, comparefunction):
 def heightTree(root):
     """
     Retorna la altura del arbol
-
     Args:
         root: El arbol con las parejas
     Returns:
@@ -680,7 +670,6 @@ def getNode(root, key, comparefunction):
     """
     Retorna la pareja llave, valor, cuya llave sea igual a key.
     Es necesario proveer una función de comparación para las llaves.
-
     Args:
         root: El arbol rojo-negro
         key: La llave de busqueda
@@ -754,7 +743,6 @@ def floorKey(root, key, cmpfunction):
     """
     Retorna la llave mas grande en la tabla de simbolos, menor o
     igual a la llave key
-
     Args:
         rbt: El arbol de búsqueda
         key: La llave
@@ -785,7 +773,6 @@ def ceilingKey(root, key, cmpfunction):
     """
     Retorna la llave mas pequeña en la tabla de simbolos,
     mayor o igual a la llave key
-
     Args:
         rbt: El arbol de búsqueda
         key: La llave
@@ -927,7 +914,6 @@ def deleteMinTree(root):
     """
     Encuentra y remueve la menor  llave de la tabla de simbolos
     y su valor asociado
-
     root: La tabla de simbolos
     Returns:
         La tabla de simbolos sin la menor llave
@@ -951,7 +937,6 @@ def deleteMaxTree(root):
     """
     Encuentra y remueve la mayor llave de la tabla de simbolos
     y su valor asociado
-
     root: La tabla de simbolos
     Returns:
         La tabla de simbolos sin la menor llave

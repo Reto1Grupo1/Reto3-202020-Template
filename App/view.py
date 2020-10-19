@@ -101,21 +101,7 @@ while True:
         except:
             print("La fecha es inválida.")
             
-
     elif int(inputs[0]) == 4:
-        InitialDate=input("Ingrese una fecha inicial de la forma YYYY-MM-DD: ")
-        FinalDate=input("Ingrese una fecha final de la forma YYYY-MM-DD: ")
-        try:
-            fecha1=int(str(InitialDate[0:4])+str(InitialDate[5:7])+str(InitialDate[8:10]))
-            fecha2=int(str(FinalDate[0:4])+str(FinalDate[5:7])+str(FinalDate[8:10]))
-            if  9<len(InitialDate)<11  and 9<len(FinalDate)<11 :
-                a=controller.requerimiento3(cont,InitialDate,FinalDate)
-                print("La cantidad de acidentes que sucedieron durante las fechas "+InitialDate+" y "+FinalDate+" son "+str(a[1])+" y el mayor tipo de severidad que sucedio fue "+ str(a[0]) )
-        except:
-            print("La fecha es Invalida")
-
-    
-    elif int(inputs[0]) == 5:
         BeforeDate=input("Fecha (YYYY-MM-DD): ")
         try:
             Retorno=controller.GetAccidentsBeforeDate(cont,BeforeDate)
@@ -126,7 +112,17 @@ while True:
             print("---------------")
         except:
             print("La fecha es invalida")
-
+    elif int(inputs[0]) == 5:
+        InitialDate=input("Ingrese una fecha inicial de la forma YYYY-MM-DD: ")
+        FinalDate=input("Ingrese una fecha final de la forma YYYY-MM-DD: ")
+        try:
+            fecha1=int(str(InitialDate[0:4])+str(InitialDate[5:7])+str(InitialDate[8:10]))
+            fecha2=int(str(FinalDate[0:4])+str(FinalDate[5:7])+str(FinalDate[8:10]))
+            if  9<len(InitialDate)<11  and 9<len(FinalDate)<11 :
+                a=controller.requerimiento3(cont,InitialDate,FinalDate)
+                print("La cantidad de acidentes que sucedieron durante las fechas "+InitialDate+" y "+FinalDate+" son "+str(a[1])+" y el mayor tipo de severidad que sucedio fue "+ str(a[0]) )
+        except:
+            print("La fecha es Invalida")
     elif int(inputs[0]) == 6:
         try:
             print("Buscando el estado con mas accidentes ")
