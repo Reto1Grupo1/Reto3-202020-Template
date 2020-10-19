@@ -109,6 +109,10 @@ def GetAccidentsBeforeDate(analyzer,BeforeDate):
 def AccidentesPorHora(analyzer,HoraInicial,HoraFinal):
     retorno=model.AccidentesPorHora(analyzer,HoraInicial,HoraFinal)
     return retorno
+
+def AccidentesPorZona(analyzer,RadioParametro,LongitudParametro,LatitudParametro):
+    return model.AccidentesPorZona(analyzer,RadioParametro,LongitudParametro,LatitudParametro)
+
 def getfechayestado(analyzer, initialDate, finalDate):
     """
     Retorna el total de crimenes en un rango de fechas

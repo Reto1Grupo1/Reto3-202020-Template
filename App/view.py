@@ -58,6 +58,7 @@ def printMenu():
     print("5- Conocer los accidentes en un rango de fechas")
     print("6- Conocer el estado con mas accidentes ")
     print("7- Conocer los accidentes por rango de hora")
+    print("8- Conocer la zona geografica mas accidentada")
     print("0- Salir")
     print("*******************************************")
 
@@ -134,6 +135,7 @@ while True:
             print(ret2)
         except:
             print("Formato de fecha inválido.")
+
     elif int(inputs[0]) == 7:
         try:
             HoraInicial=input("Hora inicial (00:00)-(23:59): ")
@@ -163,6 +165,27 @@ while True:
         except:
             print("Formato de hora invalido")
 
+    elif int(inputs[0]) == 8:
+        RadioParametro=float(input("Radio alrededor del centro en km: "))
+        LongitudParametro=float(input("Longitud central: "))
+        LatitudParametro=float(input("Latitud central: "))
+        Retorno=controller.AccidentesPorZona(cont,RadioParametro,LongitudParametro,LatitudParametro)
+        print("Accidentes dentro del radio los Lunes: "+str(lt.getElement(Retorno,1)))
+        print("-------------")
+        print("Accidentes dentro del radio los Martes: "+str(lt.getElement(Retorno,2)))
+        print("-------------")
+        print("Accidentes dentro del radio los Miercoles: "+str(lt.getElement(Retorno,3)))
+        print("-------------")
+        print("Accidentes dentro del radio los Jueves: "+str(lt.getElement(Retorno,4)))
+        print("-------------")
+        print("Accidentes dentro del radio los Viernes: "+str(lt.getElement(Retorno,5)))
+        print("-------------")
+        print("Accidentes dentro del radio los Sabado: "+str(lt.getElement(Retorno,6)))
+        print("-------------")
+        print("Accidentes dentro del radio los Domingo: "+str(lt.getElement(Retorno,7)))
+        print("-------------")
+        print("Total de accidentes dentro del radio: "+str(lt.getElement(Retorno,8)))
+        print("-------------")
     else:
         sys.exit(0)
 sys.exit(0)

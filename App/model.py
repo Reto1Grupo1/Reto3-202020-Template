@@ -238,7 +238,7 @@ def requerimiento3(analyzer,InitialDate,FinalDate):
                             CantidadA=int(lt.size(o))
                             Total=CantidadA+Total
                             for i in range(1,int(CantidadA)+1):
-                                Causa=lt.getElement(valor["value"],i)
+                                Causa=lt.getElement(o,i)
                                 Severidad=Causa["Severity"]
                                 ListSeveridad.append(Severidad)
 
@@ -305,10 +305,11 @@ def GetAccidentsBeforeDate(analyzer,BeforeDate):
             MaxAccidents=Number
             MostAccidentsDate=Date
             
-    Retorno=lt.newList("SINGLE_LINKED",compareIds)
+    Retorno=lt.newList("ARRAY_LIST",compareIds)
     lt.addLast(Retorno,TotalAccidents)
     lt.addLast(Retorno,MostAccidentsDate)
     return Retorno
+
 def getfechayestado(analyzer, initialDate, finalDate):
     """
     Retorna el numero de crimenes en un rago de fechas.
@@ -350,8 +351,85 @@ def getfechayestado(analyzer, initialDate, finalDate):
     
     return retornofecha,retornoestado
 
+def AccidentesPorZona(analyzer,RadioParametro,LongitudParametro,LatitudParametro,):
+    TotalAccidentes=0
+    Fechas=om.keys(analyzer["Llaves"],om.minKey(analyzer["Llaves"]),om.maxKey(analyzer["Llaves"]))
+    Lunes=0
+    Martes=0
+    Miercoles=0
+    Jueves=0
+    Viernes=0
+    Sabado=0
+    Domingo=0
+    for i in range(1,(lt.size(Fechas)+1)):
+        Fecha=lt.getElement(Fechas,i)
+        Pareja=om.get(analyzer["Llaves"],Fecha)
+        Accidentes=me.getValue(Pareja)
+        Numero=lt.size(Accidentes)
+        TotalAccidentes=TotalAccidentes+Numero
+        for j in range(1,(lt.size(Accidentes)+1)):
+            Accidente=lt.getElement(Accidentes,j)
+            if CalculoDeRadio(RadioParametro,LongitudParametro,LatitudParametro,float(Accidente["Start_Lng"]),float(Accidente["Start_Lat"])):
+                dia=Dia(Fecha)
+                if dia=="Lunes":
+                    Lunes+=1
+                elif dia=="Martes":
+                    Martes+=1
+                elif dia=="Miercoles":
+                    Miercoles+=1
+                elif dia=="Jueves":
+                    Jueves+=1
+                elif dia=="Viernes":
+                    Viernes+=1
+                elif dia=="Sabado":
+                    Sabado+=1
+                elif dia=="Domingo":
+                    Domingo+=1
+        
+    Total=Lunes+Martes+Miercoles+Jueves+Viernes+Sabado+Domingo
+    Retorno=lt.newList("ARRAY_LIST",compareIds)
+    lt.addLast(Retorno,Lunes)
+    lt.addLast(Retorno,Martes)
+    lt.addLast(Retorno,Miercoles)
+    lt.addLast(Retorno,Jueves)
+    lt.addLast(Retorno,Viernes)
+    lt.addLast(Retorno,Sabado)
+    lt.addLast(Retorno,Domingo)
+    lt.addLast(Retorno,Total)
+    return Retorno
 
+def CalculoDeRadio(RadioParametro,LongitudParametro,LatitudParametro,LongitudAccidente,LatitudAccidente):
+    LongitudCalculada=LongitudParametro-LongitudAccidente
+    LatitudCalculada=LatitudParametro-LatitudAccidente
+    if LongitudCalculada<0:
+        LongitudCalculada=(LongitudCalculada*(-1))
+    if LatitudCalculada<0:
+        LatitudCalculada=(LatitudCalculada*(-1))
+    CoordenataCalculada=((LongitudCalculada**2)+(LatitudCalculada**2))**(1/2)
+    RadioCalculado=CoordenataCalculada*111.12
+    return RadioCalculado<=RadioParametro
 
+def Dia(fecha):
+    year=int(fecha[0:4])
+    month=int(fecha[5:7])
+    day=int(fecha[8:10])
+    a=datetime.date(year,month,day)
+    b=a.isoweekday()
+    if b == 1:
+        b="Lunes"
+    elif b == 2:
+        b="Martes"
+    elif b == 3:
+        b="Miercoles"
+    elif b==4:
+        b="Jueves"
+    elif b==5:
+        b="Viernes"
+    elif b==6:
+        b="Sabado"
+    else:
+        b="Domingo"
+    return b
 
 def addState(analyzer, state_name, accident):
     """
@@ -402,7 +480,7 @@ def AccidentesPorHora(analyzer,HoraInicial,HoraFinal):
                 Accidente["Severity"]=="4"
                 Severity4+=1
     Total=Severity1+Severity2+Severity3+Severity4
-    Retorno=lt.newList("SINGLE_LINKED",compareIds)
+    Retorno=lt.newList("ARRAY_LIST",compareIds)
     lt.addLast(Retorno,Severity1)
     lt.addLast(Retorno,Severity2)
     lt.addLast(Retorno,Severity3)
