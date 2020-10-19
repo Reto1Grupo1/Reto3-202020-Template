@@ -290,8 +290,6 @@ def GetAccidentsBeforeDate(analyzer,BeforeDate):
     MaxDate=BeforeDateYear+"-"+BeforeDateMonth+"-"+BeforeDateDay
     Dates=(om.keys(analyzer["Llaves"],MinDate,MaxDate))
 
-    print(MinDate)
-    print(MaxDate)
 
     TotalAccidents=0
     MaxAccidents=0
@@ -310,12 +308,6 @@ def GetAccidentsBeforeDate(analyzer,BeforeDate):
     Retorno=lt.newList("SINGLE_LINKED",compareIds)
     lt.addLast(Retorno,TotalAccidents)
     lt.addLast(Retorno,MostAccidentsDate)
-    print("Retorno:")
-    print(Retorno)
-    print("TotalAccidents:")
-    print(lt.getElement(Retorno,1))
-    print("MostAccidentsDate:")
-    print(lt.getElement(Retorno,2))
     return Retorno
 def getfechayestado(analyzer, initialDate, finalDate):
     """
