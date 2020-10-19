@@ -319,16 +319,13 @@ def GetAccidentsBeforeDate(analyzer,BeforeDate):
 
 
 def AccidentesPorHora(analyzer,HoraInicial,HoraFinal):
-    print("funciona 2")
     HoraInicial=AproximacionHora(HoraInicial)
     HoraFinal=AproximacionHora(HoraFinal)
-    print("funciona 3")
     ListaHoras=om.keys(analyzer["Horas"],HoraInicial,HoraFinal)
     Severity1=0
     Severity2=0
     Severity3=0
     Severity4=0
-    print("funciona 4")
     for i in range(1,(lt.size(ListaHoras)+1)):
         Hora=lt.getElement(ListaHoras,i)
         Pareja=om.get(analyzer["Horas"],Hora)
@@ -344,7 +341,6 @@ def AccidentesPorHora(analyzer,HoraInicial,HoraFinal):
             else:
                 Accidente["Severity"]=="4"
                 Severity4+=1
-    print("funciona 5")
     Total=Severity1+Severity2+Severity3+Severity4
     Retorno=lt.newList("SINGLE_LINKED",compareIds)
     lt.addLast(Retorno,Severity1)
@@ -352,7 +348,6 @@ def AccidentesPorHora(analyzer,HoraInicial,HoraFinal):
     lt.addLast(Retorno,Severity3)
     lt.addLast(Retorno,Severity4)
     lt.addLast(Retorno,Total)
-    print("funciona 6")
     return Retorno
 
 
