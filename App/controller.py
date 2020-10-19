@@ -62,6 +62,7 @@ def loadData(analyzer, accidentsfile):
     for accident in input_file:
         model.addAccident(analyzer, accident)
         model.addFecha(analyzer,accident)
+        model.addHora(analyzer,accident)
     return analyzer
 
 # ___________________________________________________
@@ -104,3 +105,9 @@ def requerimiento3(analyzer,InitialDate,FinalDate):
 
 def GetAccidentsBeforeDate(analyzer,BeforeDate):
     return model.GetAccidentsBeforeDate(analyzer,BeforeDate)
+
+def AccidentesPorHora(analyzer,HoraInicial,HoraFinal):
+    print("funciona 1")
+    retorno=AccidentesPorHora(analyzer,HoraInicial,HoraFinal)
+    print("funciona definitivo")
+    return retorno

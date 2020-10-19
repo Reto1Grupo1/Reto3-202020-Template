@@ -58,6 +58,8 @@ def newAnalyzer():
                                       comparefunction=compareSeverity)
     analyzer["Llaves"]=om.newMap(omaptype='BST',
                                       comparefunction=compareDates)
+    analyzer["Horas"]=om.newMap(omaptype='BST',
+                                      comparefunction=compareHours)
     return analyzer
 
 # Funciones para agregar informacion al catalogo
@@ -82,6 +84,18 @@ def addFecha(analyzer,accident):
         lt.addLast(Lista["value"],accident)
         NewValue=Lista["value"]
         om.put(analyzer["Llaves"],key,NewValue)
+
+def addHora(analyzer,accident):
+    key=accident["Start_Time"][11:15]
+    if om.contains(analyzer["Horas"],key)==False:
+        Listvalues=lt.newList("ARRALIST",compareDates)
+        lt.addFirst(Listvalues,accident)
+        om.put(analyzer["Horas"],key,Listvalues)
+    else:
+        Lista=om.get(analyzer["Horas"],key)
+        lt.addLast(Lista["value"],accident)
+        NewValue=Lista["value"]
+        om.put(analyzer["Horas"],key,NewValue)
 
 def addAccident(analyzer, accident):
     """
@@ -282,7 +296,7 @@ def GetAccidentsBeforeDate(analyzer,BeforeDate):
     MaxAccidents=0
     MostAccidentsDate="YYYY-MM-DD"
     
-    for i in range(1,(lt.size(Dates))):
+    for i in range(1,(lt.size(Dates)+1)):
         Date=lt.getElement(Dates,i)
         Pair=om.get(analyzer["Llaves"],Date)
         Accidents=me.getValue(Pair)
@@ -303,6 +317,59 @@ def GetAccidentsBeforeDate(analyzer,BeforeDate):
     print(lt.getElement(Retorno,2))
     return Retorno
 
+
+def AccidentesPorHora(analyzer,HoraInicial,HoraFinal):
+    print("funciona 2")
+    HoraInicial=AproximacionHora(HoraInicial)
+    HoraFinal=AproximacionHora(HoraFinal)
+    print("funciona 3")
+    ListaHoras=om.keys(analyzer["Horas"],HoraInicial,HoraFinal)
+    Severity1=0
+    Severity2=0
+    Severity3=0
+    Severity4=0
+    print("funciona 4")
+    for i in range(1,(lt.size(ListaHoras)+1)):
+        Hora=lt.getElement(ListaHoras,i)
+        Pareja=om.get(analyzer["Horas"],Hora)
+        Accidente=me.getValue(Pareja)
+        if Accidente["Severity"]=="1":
+            Severity1+=1
+        elif Accidente["Severity"]=="2":
+            Severity2+=1
+        elif Accidente["Severity"]=="3":
+            Severity3+=1
+        else:
+            Accidente["Severity"]=="4"
+            Severity4+=1
+    print("funciona 5")
+    Total=Severity1+Severity2+Severity3+Severity4
+    Retorno=lt.newList("SINGLE_LINKED",compareIds)
+    lt.addLast(Retorno,Severity1)
+    lt.addLast(Retorno,Severity2)
+    lt.addLast(Retorno,Severity3)
+    lt.addLast(Retorno,Severity4)
+    lt.addLast(Retorno,Total)
+    print("funciona 6")
+    return Retorno
+
+
+def AproximacionHora(hora):
+    horas=hora[0]+hora[1]
+    minutos=hora[3]+hora[4]
+    if int(minutos)>=0 and int(minutos)<=15:
+        hora=horas+":00"
+    elif int(minutos)>=16 and int(minutos)<=45:
+        hora=horas+":30"
+    else:
+        if horas[0]=="0" and horas!="09":
+            horas="0"+str(int(horas[1]+1))
+        elif horas=="09":
+            horas="10"
+        else:
+            horas=str(int(horas)+1)
+        hora=horas+":00"
+    return hora
 
 # ==============================
 # Funciones de Comparacion
@@ -325,6 +392,17 @@ def compareDates(date1, date2):
     if (date1 == date2):
         return 0
     elif (date1 > date2):
+        return 1
+    else:
+        return -1
+def compareHours(hour1, hour2):
+    """
+    Compara dos ids de libros, id es un identificador
+    y entry una pareja llave-valor
+    """
+    if (hour1 == hour2):
+        return 0
+    elif (hour1 > hour2):
         return 1
     else:
         return -1
