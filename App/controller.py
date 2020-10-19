@@ -107,7 +107,5 @@ def GetAccidentsBeforeDate(analyzer,BeforeDate):
     return model.GetAccidentsBeforeDate(analyzer,BeforeDate)
 
 def AccidentesPorHora(analyzer,HoraInicial,HoraFinal):
-    print("funciona 1")
-    retorno=AccidentesPorHora(analyzer,HoraInicial,HoraFinal)
-    print("funciona definitivo")
+    retorno=model.AccidentesPorHora(analyzer,HoraInicial,HoraFinal)
     return retorno

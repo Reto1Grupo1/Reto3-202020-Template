@@ -332,16 +332,18 @@ def AccidentesPorHora(analyzer,HoraInicial,HoraFinal):
     for i in range(1,(lt.size(ListaHoras)+1)):
         Hora=lt.getElement(ListaHoras,i)
         Pareja=om.get(analyzer["Horas"],Hora)
-        Accidente=me.getValue(Pareja)
-        if Accidente["Severity"]=="1":
-            Severity1+=1
-        elif Accidente["Severity"]=="2":
-            Severity2+=1
-        elif Accidente["Severity"]=="3":
-            Severity3+=1
-        else:
-            Accidente["Severity"]=="4"
-            Severity4+=1
+        Accidente1=me.getValue(Pareja)
+        for j in range(1,(lt.size(Accidente1)+1)):
+            Accidente=lt.getElement(Accidente1,j)
+            if Accidente["Severity"]=="1":
+                Severity1+=1
+            elif Accidente["Severity"]=="2":
+                Severity2+=1
+            elif Accidente["Severity"]=="3":
+                Severity3+=1
+            else:
+                Accidente["Severity"]=="4"
+                Severity4+=1
     print("funciona 5")
     Total=Severity1+Severity2+Severity3+Severity4
     Retorno=lt.newList("SINGLE_LINKED",compareIds)
