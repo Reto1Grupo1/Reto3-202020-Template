@@ -109,3 +109,11 @@ def GetAccidentsBeforeDate(analyzer,BeforeDate):
 def AccidentesPorHora(analyzer,HoraInicial,HoraFinal):
     retorno=model.AccidentesPorHora(analyzer,HoraInicial,HoraFinal)
     return retorno
+def getfechayestado(analyzer, initialDate, finalDate):
+    """
+    Retorna el total de crimenes en un rango de fechas
+    """
+    initialDate = datetime.datetime.strptime(initialDate, '%Y-%m-%d')
+    finalDate = datetime.datetime.strptime(finalDate, '%Y-%m-%d')
+    return model.getfechayestado(analyzer, initialDate.date(),
+                                  finalDate.date())

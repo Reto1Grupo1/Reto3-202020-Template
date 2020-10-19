@@ -56,6 +56,7 @@ def printMenu():
     print("3- Buscar accidentes por fecha y severidad")
     print("4- Conocer los accidentes anteriores a una fecha")
     print("5- Conocer los accidentes en un rango de fechas")
+    print("6- Conocer el estado con mas accidentes ")
     print("7- Conocer los accidentes por rango de hora")
     print("0- Salir")
     print("*******************************************")
@@ -74,15 +75,16 @@ while True:
         cont = controller.init()
 
     elif int(inputs[0]) == 2:
-            print("\nCargando información de crimenes ....")
-        
-            controller.loadData(cont, accidents_file)
-            print('Crimenes cargados: ' + str(controller.accidentSize(cont)))
-            print('Altura del arbol: ' + str(controller.indexHeight(cont)))
-            print('Elementos en el arbol: ' + str(controller.indexSize(cont)))
-            print('Menor Llave: ' + str(controller.minKey(cont)))
-            print('Mayor Llave: ' + str(controller.maxKey(cont)))
-        
+        try:
+                print("\nCargando información de crimenes ....")
+
+                controller.loadData(cont, accidents_file)
+                print('Crimenes cargados: ' + str(controller.accidentSize(cont)))
+                print('Altura del arbol: ' + str(controller.indexHeight(cont)))
+                print('Elementos en el arbol: ' + str(controller.indexSize(cont)))
+                print('Menor Llave: ' + str(controller.minKey(cont)))
+                print('Mayor Llave: ' + str(controller.maxKey(cont)))
+        except:
             print("La fecha no está registrada")
         
 
@@ -100,7 +102,7 @@ while True:
             print("La fecha es inválida.")
             
 
-    elif int(inputs[0]) == 5:
+    elif int(inputs[0]) == 4:
         InitialDate=input("Ingrese una fecha inicial de la forma YYYY-MM-DD: ")
         FinalDate=input("Ingrese una fecha final de la forma YYYY-MM-DD: ")
         try:
@@ -112,8 +114,8 @@ while True:
         except:
             print("La fecha es Invalida")
 
-
-    elif int(inputs[0]) == 4:
+    
+    elif int(inputs[0]) == 5:
         BeforeDate=input("Fecha (YYYY-MM-DD): ")
         try:
             Retorno=controller.GetAccidentsBeforeDate(cont,BeforeDate)
@@ -125,12 +127,21 @@ while True:
         except:
             print("La fecha es invalida")
 
-
+    elif int(inputs[0]) == 6:
+        try:
+            print("Buscando el estado con mas accidentes ")
+            initialDate = input("Fecha (YYYY-MM-DD): ")
+            finalDate = input ("Fecha (YYYY-MM-DD): ")
+            ret1,ret2=(controller.getfechayestado(cont, initialDate, finalDate))
+            print(ret1)
+            print("-----------")
+            print(ret2)
+        except:
+            print("Formato de fecha inválido.")
     elif int(inputs[0]) == 7:
         try:
             HoraInicial=input("Hora inicial (00:00)-(23:59): ")
             HoraFinal=input("Hora final (00:00)-(23:59): ")
-            print("funciona 0")
             lista=controller.AccidentesPorHora(cont,HoraInicial,HoraFinal)
             severity1=lt.getElement(lista,1)
             severity2=lt.getElement(lista,2)

@@ -60,6 +60,7 @@ def newAnalyzer():
                                       comparefunction=compareDates)
     analyzer["Horas"]=om.newMap(omaptype='BST',
                                       comparefunction=compareHours)
+    analyzer["States"] = m.newMap(numelements=200,maptype="CHAINING",loadfactor=0.4,comparefunction=compareState)
     return analyzer
 
 # Funciones para agregar informacion al catalogo
@@ -316,7 +317,74 @@ def GetAccidentsBeforeDate(analyzer,BeforeDate):
     print("MostAccidentsDate:")
     print(lt.getElement(Retorno,2))
     return Retorno
+def getfechayestado(analyzer, initialDate, finalDate):
+    """
+    Retorna el numero de crimenes en un rago de fechas.
+    """
+    lst =om.keys(analyzer["dates"],initialDate,finalDate)
+    keys=[]
+    for i in range(1,lt.size(lst)+1):
+         s=lt.getElement(lst,i)
+         keys.append(s)
+    mayorfecha=""
+    mayoraparacionfecha=0
+    for key in keys:
+         accidentdate = om.get(analyzer['dates'], key)
+         fecha= me.getValue(accidentdate)["lstaccidents"]
+         tamanio= lt.size(fecha)
+         if tamanio>mayoraparacionfecha:
+            mayorfecha= key
+            mayoraparacionfecha= tamanio
+    retornofecha={}
+    retornofecha["Fecha más ocurrente"]=str(mayorfecha)
+    retornofecha["número de accidentes"]=mayoraparacionfecha
+    for key in keys:
+         accidentdate = om.get(analyzer['dates'], key)
+         fecha= me.getValue(accidentdate)["lstaccidents"]
+         for j in range(1,lt.size(fecha)+1):
+                acc=lt.getElement(fecha,j)
+                addState(analyzer,acc["State"],acc)
+    tam=m.size(analyzer["States"])
+    keyset=m.keySet(analyzer["States"])
+    nmayor_estado=0
+    retornoestado=""
+    for i in range(1,tam+1):
+        estado=lt.getElement(keyset,i)  
+        entry=m.get( analyzer['States'],estado)
+        entry= me.getValue(entry)       
+        if entry["Ocurrencias"] > nmayor_estado:
+            nmayor_estado=entry["Ocurrencias"]
+            retornoestado=entry
+    
+    return retornofecha,retornoestado
 
+
+
+
+def addState(analyzer, state_name, accident):
+    """
+    Esta función adiciona un libro a la lista de libros publicados
+    por un autor.
+    Cuando se adiciona el libro se actualiza el promedio de dicho autor
+    """
+    exist_state = m.contains( analyzer['States'],state_name)
+    if exist_state:
+        entry = m.get( analyzer['States'],state_name)
+        entry= me.getValue(entry)
+        entry["Ocurrencias"]+=1
+    else:
+        state = NewState(state_name)
+        m.put( analyzer['States'], state_name, state)
+       
+
+
+
+
+def NewState(name):
+    state = {'Estado_mas_ocurente': "", "Ocurrencias":0}
+    state['Estado_mas_ocurente'] = name
+    state['Ocurrencias'] = 1
+    return state
 
 def AccidentesPorHora(analyzer,HoraInicial,HoraFinal):
     HoraInicial=AproximacionHora(HoraInicial)
@@ -412,6 +480,18 @@ def compareSeverity(keyname, Severity):
     if (keyname == seventry):
         return 0
     elif (keyname > seventry):
+        return 1
+    else:
+        return -1
+def compareState(keyname,State):
+    """
+    Compara dos nombres de autor. El primero es una cadena
+    y el segundo un entry de un map
+    """
+    statentry = me.getKey(State)
+    if (keyname == statentry):
+        return 0
+    elif (keyname > statentry):
         return 1
     else:
         return -1
